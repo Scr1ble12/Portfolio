@@ -1,75 +1,157 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arjun's Page</title>
+    <title>My Portfolio</title>
     <style>
+        /* CSS Styles */
         body {
             margin: 0;
+            font-family: Arial, sans-serif;
             overflow: hidden;
-            background: black;
-            color: #00ff00;
         }
 
-        canvas {
-            display: block;
+        #matrix-intro {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            overflow: hidden;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #matrix {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .intro-message {
+            position: relative;
+            z-index: 2;
+            color: white;
+            text-align: center;
+        }
+
+        #portfolio-content {
+            display: none; /* Hidden until the Matrix effect ends */
+            padding: 20px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <h1> Hey There, Welcome to my page.</h1>
-</body>
-<body>
-    <canvas id="matrix"></canvas>
+    <!-- Matrix Intro Section -->
+    <div id="matrix-intro">
+        <canvas id="matrix"></canvas>
+        <div class="intro-message">
+            <h1>Welcome to My Portfolio</h1>
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <!-- Portfolio Content -->
+    <div id="portfolio-content">
+        <h1>My Portfolio</h1>
+        <p>Explore my projects and skills!</p>
+    </div>
+
     <script>
-        const canvas = document.getElementById('matrix');
-        const ctx = canvas.getContext('2d');
+        // JavaScript
+        document.addEventListener("DOMContentLoaded", () => {
+            const canvas = document.getElementById('matrix');
+            const ctx = canvas.getContext('2d');
 
-        // Set canvas size
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        // Characters and font settings
-        const matrixCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%';
-        const fontSize = 16;
-        const columns = canvas.width / fontSize; // Number of columns
-        const drops = Array.from({ length: columns }, () => 0); // Tracks the Y position for each column
-
-        // Draw function
-        function draw() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; // Fading effect
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.fillStyle = '#00ff00'; // Matrix green
-            ctx.font = `${fontSize}px monospace`;
-
-            // Loop through each column
-            for (let i = 0; i < drops.length; i++) {
-                const text = matrixCharacters.charAt(Math.floor(Math.random() * matrixCharacters.length));
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-                // Randomly reset drop to the top or let it fall
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.95) {
-                    drops[i] = 0;
-                }
-
-                drops[i]++;
-            }
-        }
-
-        setInterval(draw, 50);
-
-        // Adjust canvas size dynamically
-        window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            drops.length = Math.ceil(canvas.width / fontSize);
-            drops.fill(0);
+
+            const matrixCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%';
+            const fontSize = 16;
+            const columns = canvas.width / fontSize;
+            const drops = Array.from({ length: columns }, () => 0);
+
+            function draw() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.fillStyle = '#00ff00';
+                ctx.font = `${fontSize}px monospace`;
+
+                for (let i = 0; i < drops.length; i++) {
+                    const text = matrixCharacters.charAt(Math.floor(Math.random() * matrixCharacters.length));
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.95) {
+                        drops[i] = 0;
+                    }
+
+                    drops[i]++;
+                }
+            }
+
+            const interval = setInterval(draw, 50);
+
+            // Stop the Matrix effect and show the portfolio after 5 seconds
+            setTimeout(() => {
+                clearInterval(interval);
+                document.getElementById('matrix-intro').style.display = 'none';
+                document.getElementById('portfolio-content').style.display = 'block';
+            }, 5000);
+        });
+
+        // Handle tab switching with visibility change
+        document.addEventListener("visibilitychange", () => {
+            const introDiv = document.getElementById('matrix-intro');
+            const portfolioContent = document.getElementById('portfolio-content');
+
+            if (document.hidden) {
+                introDiv.style.display = 'flex';
+                portfolioContent.style.display = 'none';
+
+                const canvas = document.getElementById('matrix');
+                const ctx = canvas.getContext('2d');
+                const matrixCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%';
+                const fontSize = 16;
+                const columns = canvas.width / fontSize;
+                const drops = Array.from({ length: columns }, () => 0);
+
+                function draw() {
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                    ctx.fillStyle = '#00ff00';
+                    ctx.font = `${fontSize}px monospace`;
+
+                    for (let i = 0; i < drops.length; i++) {
+                        const text = matrixCharacters.charAt(Math.floor(Math.random() * matrixCharacters.length));
+                        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                        if (drops[i] * fontSize > canvas.height && Math.random() > 0.95) {
+                            drops[i] = 0;
+                        }
+
+                        drops[i]++;
+                    }
+                }
+
+                const interval = setInterval(draw, 50);
+
+                // Stop Matrix effect after 3 seconds when tab becomes active again
+                setTimeout(() => {
+                    clearInterval(interval);
+                    introDiv.style.display = 'none';
+                    portfolioContent.style.display = 'block';
+                }, 3000);
+            }
         });
     </script>
 </body>
-
-
 </html>
