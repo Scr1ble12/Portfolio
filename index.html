@@ -1,1 +1,70 @@
 <h1>Hello</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Code Effect</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: black;
+            color: #00ff00;
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrix"></canvas>
+    <script>
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+
+        // Set canvas size
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Characters and font settings
+        const matrixCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%';
+        const fontSize = 16;
+        const columns = canvas.width / fontSize; // Number of columns
+        const drops = Array.from({ length: columns }, () => 0); // Tracks the Y position for each column
+
+        // Draw function
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; // Fading effect
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#00ff00'; // Matrix green
+            ctx.font = `${fontSize}px monospace`;
+
+            // Loop through each column
+            for (let i = 0; i < drops.length; i++) {
+                const text = matrixCharacters.charAt(Math.floor(Math.random() * matrixCharacters.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                // Randomly reset drop to the top or let it fall
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.95) {
+                    drops[i] = 0;
+                }
+
+                drops[i]++;
+            }
+        }
+
+        setInterval(draw, 50);
+
+        // Adjust canvas size dynamically
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            drops.length = Math.ceil(canvas.width / fontSize);
+            drops.fill(0);
+        });
+    </script>
+</body>
+</html>
