@@ -1,11 +1,12 @@
-/* Global Styles */
+/* General Page Styling */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    overflow: hidden;
+    background-color: black;
+    color: white;
 }
 
-/* Matrix Intro Styles */
+/* Matrix Loading Screen */
 #matrix-intro {
     position: fixed;
     top: 0;
@@ -31,14 +32,39 @@ body {
 .intro-message {
     position: relative;
     z-index: 2;
-    color: white;
+    color: #00ff00;
     text-align: center;
 }
 
-/* Portfolio Content Styles */
+/* Portfolio Content (Hidden initially) */
 #portfolio-content {
-    display: none; /* Hidden until the Matrix effect ends */
+    display: none;
     padding: 20px;
     text-align: center;
 }
+
+/* Header and Navigation Styling */
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    border-bottom: 2px solid #00ff00;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #00ff00;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: white;
+}
+
 
