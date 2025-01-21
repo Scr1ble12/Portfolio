@@ -1,6 +1,8 @@
 // Function to initialize the Matrix effect
-function startMatrixEffect(canvas) {
+function startMatrixEffect() {
+    const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
+
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
@@ -31,12 +33,11 @@ function startMatrixEffect(canvas) {
     return setInterval(draw, 50);
 }
 
-// Handle DOMContentLoaded to show the intro animation
+// Show the main portfolio after loading
 document.addEventListener('DOMContentLoaded', () => {
-    const canvas = document.getElementById('matrix');
-    const interval = startMatrixEffect(canvas);
+    const interval = startMatrixEffect();
 
-    // Stop the Matrix effect and reveal the portfolio content after 5 seconds
+    // Simulate a loading period of 5 seconds
     setTimeout(() => {
         clearInterval(interval);
         document.getElementById('matrix-intro').style.display = 'none';
@@ -44,23 +45,3 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 5000);
 });
 
-// Handle tab switching visibility
-document.addEventListener('visibilitychange', () => {
-    const introDiv = document.getElementById('matrix-intro');
-    const portfolioContent = document.getElementById('portfolio-content');
-
-    if (document.hidden) {
-        introDiv.style.display = 'flex';
-        portfolioContent.style.display = 'none';
-
-        const canvas = document.getElementById('matrix');
-        const interval = startMatrixEffect(canvas);
-
-        // Stop Matrix effect after 3 seconds when the tab is active again
-        setTimeout(() => {
-            clearInterval(interval);
-            introDiv.style.display = 'none';
-            portfolioContent.style.display = 'block';
-        }, 3000);
-    }
-});
